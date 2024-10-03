@@ -29,8 +29,8 @@ export class LoginPage implements OnInit {
   }
 
   //método asociado al boton para hacer un login:
-  login(){
-    if(this.usuarioService.login(this.email,this.password)){
+  async login(){
+    if(await this.usuarioService.login(this.email,this.password)){
       this.router.navigate(['/home']);
     }else{
       alert("CORREO O CONTRASEÑA INCORRECTOS!");

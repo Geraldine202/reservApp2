@@ -32,7 +32,7 @@ export class RegistroPage implements OnInit {
   }
 
   //podemos crear métodos:
-  public registrar():void{
+  public async registrar(){
     if( !this.validarEdad18(this.persona.controls.fecha_nacimiento.value || "") ){
       alert("ERROR! debe tener al menos 18 años para registrarse!");
       return;
@@ -43,7 +43,7 @@ export class RegistroPage implements OnInit {
       return;
     }
 
-    if(this.usuarioService.createUsuario(this.persona.value)){
+    if(await this.usuarioService.createUsuario(this.persona.value)){
       this.router.navigate(['/login']);
       this.persona.reset();
       alert("Usuario creado con éxito!")
