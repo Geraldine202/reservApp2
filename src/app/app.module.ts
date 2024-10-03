@@ -7,6 +7,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+//se agrega el import del módulo de storage-angular:
 import {IonicStorageModule} from '@ionic/storage-angular';
 
 @NgModule({
@@ -14,7 +15,7 @@ import {IonicStorageModule} from '@ionic/storage-angular';
   imports: [BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule, 
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot() //se agrega el módulo
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

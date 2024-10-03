@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+//se agregaba el import de Storage: storage-angular
 import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
@@ -6,9 +7,14 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class UsuarioService {
 
-  //acá podemos crear variables:
-  usuarios: any[] = [
-    {
+  //y en el constructor se crea una variable del módulo:
+  constructor(private storage: Storage) {
+    this.init();
+  }
+
+  async init(){
+    await this.storage.create();
+    let admin = {
       "rut": "16666666-6",
       "nombre": "alambrito",
       "fecha_nacimiento": "1990-03-24",
@@ -19,15 +25,8 @@ export class UsuarioService {
       "tiene_equipo": "no",
       "nombre_equipo": "",
       "tipo_usuario": "Administrador"
-    }
-  ];
-
-  constructor(private storage: Storage) {
-    this.init();
-  }
-
-  async init(){
-    await this.storage.create();
+    };
+    await this.createUsuario(admin);
   }
 
   //aquí vamos a crear toda nuestra lógica de programación
@@ -74,12 +73,14 @@ export class UsuarioService {
     return true;
   }
 
-  public login(correo: string, contrasena: string){
-    return this.usuarios.find(elemento=> elemento.correo==correo && elemento.contrasena==contrasena);
+  public async login(correo: string, contrasena: string): Promise<any>{
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    return usuarios.find(elemento=> elemento.correo==correo && elemento.contrasena==contrasena);
   }
 
-  public recuperarUsuario(correo:string){
-    return this.usuarios.find(elemento=> elemento.correo == correo);
+  public async recuperarUsuario(correo:string): Promise<any>{
+    let usuarios: any[] = await this.storage.get("usuarios") || [];
+    return usuarios.find(elemento=> elemento.correo == correo);
   }
 
 }
