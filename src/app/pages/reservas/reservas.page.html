@@ -1,4 +1,25 @@
 <ion-content>
+    <ion-accordion-group>
+        <ion-accordion value="Viajes">
+          <ion-item slot="header" color="light">
+            <ion-label>Viajes</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content" *ngFor="let viaje of viajes">
+            <ion-card *ngIf="viaje.estado_viaje =='pendiente'">
+                <ion-card-header>
+                    <ion-card-title>{{viaje.nombre_destino}}</ion-card-title>
+                    <ion-card-subtitle>{{viaje.estado_viaje}}</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <p>Asientos disponibles: {{viaje.asientos_disponibles}}</p>
+                    <p>Precio: {{viaje.distancia_metros/200 * 100 | currency:'CLP'}}</p>
+                </ion-card-content>
+                <ion-button routerLink="/home/reservas/detalle-reserva/{{viaje.id}}" size="block" [disabled]="viaje.asientos_disponibles==0">Ver Detalle</ion-button>
+            </ion-card>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+
     <ion-input label="Latitud" [(ngModel)]="latitud"></ion-input>
     <ion-input label="Longitud" [(ngModel)]="longitud"></ion-input>
     <ion-input label="Direccion" [(ngModel)]="direccion"></ion-input>
@@ -8,3 +29,4 @@
     <div id="map_html"></div>
   
 </ion-content>
+
