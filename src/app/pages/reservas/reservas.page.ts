@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 //lo primero es agregar un import:
 import * as L from 'leaflet';
@@ -12,67 +13,31 @@ import 'leaflet-routing-machine';
 })
 export class ReservasPage implements OnInit {
 
+  
   //vamos a crear variable(s) para controlar el mapa:
   private map: L.Map | undefined;
   private geocoder: G.Geocoder | undefined;
-  latitud: number = 0;
-  longitud: number = 0;
-  direccion: string = "";
-  distancia_metros: number = 0;
-  tiempo_segundos: number = 0;
-
-  //Simulación de una lista de viajes ya creados: eventualmente le cargan datos a la lista desde Storage:
-  viajes: any[] = [{
-      "id": 1,
-      "conductor": "Lalo Cura",
-      "asientos_disponibles": 4,
-      "nombre_destino": "santa isabel sur, parque residendial monteandino, puente alto",
-      "latitud": -33.59,
-      "longitud": -70.53,
-      "distancia_metros": 5000,
-      "tiempo_segundos": 900,
-      "estado_viaje": "pendiente",
-      "pasajeros": []
-    },{
-      "id": 2,
-      "conductor": "Elba Lazo",
-      "asientos_disponibles": 1,
-      "nombre_destino": "santa isabel sur, parque residendial monteandino, puente alto",
-      "latitud": -33.59,
-      "longitud": -70.53,
-      "distancia_metros": 5000,
-      "tiempo_segundos": 900,
-      "estado_viaje": "pendiente",
-      "pasajeros": [17888444, 15999555]
-    },{
-      "id": 3,
-      "conductor": "Elvis Teck",
-      "asientos_disponibles": 0,
-      "nombre_destino": "santa isabel sur, parque residendial monteandino, puente alto",
-      "latitud": -33.59,
-      "longitud": -70.53,
-      "distancia_metros": 5000,
-      "tiempo_segundos": 900,
-      "estado_viaje": "terminado",
-      "pasajeros": [14888555]
-    },{
-      "id": 4,
-      "conductor": "Armando Casas",
-      "asientos_disponibles": 0,
-      "nombre_destino": "santa isabel sur, parque residendial monteandino, puente alto",
-      "latitud": -33.59,
-      "longitud": -70.53,
-      "distancia_metros": 5000,
-      "tiempo_segundos": 900,
-      "estado_viaje": "pendiente",
-      "pasajeros": [17888999,15444888,16555444,15888888]
-    }
-  ];
+  usuario: any;
+  
+  //variable de grupo:
+  viaje = new FormGroup({
+    id: new FormControl(),
+    conductor: new FormControl(),
+    asientos_disp: new FormControl(),
+    nombre_destino: new FormControl(),
+    latitud: new FormControl(),
+    longitud: new FormControl(),
+    distancia_metros: new FormControl(),
+    tiempo_minutos: new FormControl(),
+    estado_viaje: new FormControl('pendiente'),
+    pasajeros: new FormControl([])
+  });
 
   constructor() { }
 
   ngOnInit() {
-    this.initMap();
+    this.usuario = JSON.parse(localStorage.getItem("usuario") || '');
+    this.viaje.controls.conductor.setValue(this.usuario.nombre);
   }
 
   initMap(){
@@ -99,26 +64,21 @@ export class ReservasPage implements OnInit {
 
     //VAMOS A REALIZAR UNA ACCIÓN CON EL BUSCADOR, CUANDO OCURRA ALGO CON EL BUSCADOR:
     this.geocoder.on('markgeocode', (e)=>{
-      this.latitud = e.geocode.properties['lat'];
-      this.longitud = e.geocode.properties['lon'];
-      this.direccion = e.geocode.properties['display_name'];
-
-      //le vamos a agregar un radio a una busqueda:
-      var circulo = L.circle([this.latitud, this.longitud],{
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 500
-      }).addTo(this.map!);
-
+      //cargo el formulario:
+      let lat = e.geocode.properties['lat'];
+      let lon = e.geocode.properties['lon'];
+      this.viaje.controls.nombre_destino.setValue(e.geocode.properties['display_name']);
+      this.viaje.controls.latitud.setValue(lat);
+      this.viaje.controls.longitud.setValue(lon);
+      
       if(this.map){
         L.Routing.control({
           waypoints: [L.latLng(-33.608552227594245, -70.58039819211703),
-                      L.latLng(this.latitud,this.longitud)],
-          fitSelectedRoutes: true,
-        }).on('routesfound', (e)=>{
-          this.distancia_metros = e.routes[0].summary.totalDistance;
-          this.tiempo_segundos = e.routes[0].summary.totalTime;
+            L.latLng(lat,lon)],
+            fitSelectedRoutes: true,
+          }).on('routesfound', (e)=>{
+            this.viaje.controls.distancia_metros.setValue(e.routes[0].summary.totalDistance);
+            this.viaje.controls.tiempo_minutos.setValue(Math.round(e.routes[0].summary.totalTime/60));
         }).addTo(this.map);
       }
     });

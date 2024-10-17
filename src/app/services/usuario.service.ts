@@ -22,7 +22,7 @@ export class UsuarioService {
       "correo": "admin@duocuc.cl",
       "contrasena": "Admin123.",
       "valida_contrasena": "Admin123.",
-      "tiene_equipo": "no",
+      "tiene_equipo": "si",
       "nombre_equipo": "",
       "tipo_usuario": "Administrador"
     };
