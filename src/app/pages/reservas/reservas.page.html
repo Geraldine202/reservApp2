@@ -9,13 +9,13 @@
         <!--Mapa-->
         <div id="map_html"></div>
         <!--Formulario para crear un viaje-->
-        <form [formGroup]="viaje">
-          <ion-input labelPlacement="stacked" label="id" formControlName="id"></ion-input>
-          <ion-input type="number" labelPlacement="stacked" label="asientos disp" formControlName="asientos_disp"></ion-input>
+        <form [formGroup]="viaje" (ngSubmit)="crearViaje()">
+          <ion-input type="number" labelPlacement="stacked" label="Asientos disp." formControlName="asientos_disp"></ion-input>
+          <ion-input type="number" labelPlacement="stacked" label="Valor" formControlName="valor"></ion-input>
           <ion-input labelPlacement="stacked" label="Destino" formControlName="nombre_destino"></ion-input>
           <ion-input labelPlacement="stacked" label="Distancia (metros)" formControlName="distancia_metros"></ion-input>
-          <ion-input labelPlacement="stacked" label="Minutos" formControlName="tiempo_minutos"></ion-input>
-          <ion-button type="submit" size="block">Crear viaje</ion-button>
+          <ion-input type="number" labelPlacement="stacked" label="Minutos" formControlName="tiempo_minutos"></ion-input>
+          <ion-button [disabled]="viaje.invalid" type="submit" size="block">Crear viaje</ion-button>
         </form>
       </div>
     </ion-accordion>
@@ -24,7 +24,20 @@
         <ion-label>Reservas</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">
+        <ion-list *ngFor="let v of viajes">
+          <ion-item>
+            <ion-label>
+              <strong>{{v.nombre_destino}}</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                Asientos disponibles: {{v.asientos_disp}}
+              </ion-note>
+            </ion-label>
+            <div class="metadata-end-wrapper" slot="end">
+              <ion-note color="medium">{{v.valor | currency}}</ion-note>
+            </div>
+          </ion-item>
 
+        </ion-list>
       </div>
     </ion-accordion>
   </ion-accordion-group>
