@@ -8,5 +8,16 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <div id="map_detalle"></div>
+    <ion-card-header>
+      <ion-card-title>{{viaje.nombre_destino}}</ion-card-title>
+      <ion-card-subtitle>Valor: {{viaje.valor | currency}}</ion-card-subtitle>
+    </ion-card-header>
   
+    <ion-card-content>
+      Here's a small text description for the card content. Nothing more, nothing less.
+    </ion-card-content>
+    <ion-button size="block" (click)="tomar_viaje()">Tomar viaje</ion-button>
+  </ion-card>
 </ion-content>

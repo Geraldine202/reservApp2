@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {v4 as uuidv4} from 'uuid';
 
@@ -7,6 +7,7 @@ import * as L from 'leaflet';
 import * as G from 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
 import { ViajeService } from 'src/app/services/viaje.service';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-reservas',
@@ -56,11 +57,6 @@ export class ReservasPage implements OnInit {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this.map);
-  
-      this.map.on('locationfound', (e)=>{
-        console.log(e.latlng.lat);
-        console.log(e.latlng.lng);
-      });
   
       //VAMOS A AGREGAR UN BUSCADOR DE DIRECCIONES EN EL MAPA:
       this.geocoder = G.geocoder({
