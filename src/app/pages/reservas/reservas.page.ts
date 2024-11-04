@@ -42,7 +42,7 @@ export class ReservasPage implements OnInit {
 
   async ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem("usuario") || '');
-    this.viaje.controls.conductor.setValue(this.usuario.nombre);
+    this.viaje.controls.conductor.setValue(this.usuario.rut);
     await this.rescatarViajes();
   }
 

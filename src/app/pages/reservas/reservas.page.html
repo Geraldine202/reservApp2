@@ -1,7 +1,7 @@
 <ion-content>
 
   <ion-accordion-group>
-    <ion-accordion value="crear_reserva" (click)="initMap()" *ngIf="usuario.tiene_equipo=='si'">
+    <ion-accordion value="crear_reserva" (click)="initMap()" *ngIf="usuario.tiene_equipo=='si' && usuario.tipo_usuario=='Alumno'">
       <ion-item slot="header" color="light">
         <ion-label>Crear reserva</ion-label>
       </ion-item>
@@ -25,7 +25,29 @@
       </ion-item>
       <div class="ion-padding" slot="content">
         <ion-list *ngFor="let v of viajes">
-          <ion-item>
+          <ion-list-header>
+            <ion-label>Mis viajes creados</ion-label>
+          </ion-list-header>
+          <ion-item *ngIf="v.conductor==usuario.rut">
+            <ion-label>
+              <strong>{{v.nombre_destino}}</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                Asientos disponibles: {{v.asientos_disp}}
+              </ion-note>
+            </ion-label>
+            <div class="metadata-end-wrapper" slot="end">
+              <ion-note color="medium">{{v.valor | currency}}</ion-note>
+            </div>
+            <ion-note slot="end">
+              <ion-button color="success" routerLink="/home/reservas/detalle-reserva/{{v.id}}">Ver</ion-button>
+            </ion-note>
+          </ion-item>
+        </ion-list>
+        <ion-list *ngFor="let v of viajes">
+          <ion-list-header>
+            <ion-label>Viajes</ion-label>
+          </ion-list-header>
+          <ion-item  *ngIf="v.conductor!=usuario.rut">
             <ion-label>
               <strong>{{v.nombre_destino}}</strong><br />
               <ion-note color="medium" class="ion-text-wrap">

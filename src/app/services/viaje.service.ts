@@ -62,7 +62,7 @@ export class ViajeService {
     if(indice==-1){
       return false;
     }
-    if(viajes[indice].pasajeros.find((pasajero: any) => pasajero.rut == pasajero.rut)){
+    if(viajes[indice].pasajeros.find((p: any) => p.rut == pasajero.rut)){
       return false;
     }
     viajes[indice].pasajeros.push(pasajero);
@@ -70,6 +70,5 @@ export class ViajeService {
     await this.storage.set("viajes",viajes);
     return true;
   }
-
 
 }

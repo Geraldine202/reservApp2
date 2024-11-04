@@ -14,12 +14,14 @@ export class DetalleReservaPage implements OnInit {
   id: string = "";
   viaje: any = {};
   private map: L.Map | undefined;
+  usuario: any = {};
 
   constructor(private activatedRoute: ActivatedRoute, private viajeService: ViajeService, private navController: NavController) { }
 
   async ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get("id") || "";
     this.viaje = await this.viajeService.getViaje(this.id);
+    this.usuario = JSON.parse(localStorage.getItem('usuario') || '');
     this.initMap();
   }
 
@@ -44,12 +46,12 @@ export class DetalleReservaPage implements OnInit {
   }
 
   async tomar_viaje(){
-    var usuario = JSON.parse(localStorage.getItem('usuario') || '');
     var pasajero = {
-      "rut": usuario.rut,
-      "nombre": usuario.nombre,
-      "correo": usuario.correo
+      "rut": this.usuario.rut,
+      "nombre": this.usuario.nombre,
+      "correo": this.usuario.correo
     }
+    console.log(pasajero);
     if(await this.viajeService.modificar_viaje(this.id, pasajero)){
       alert("Viaje tomado con éxito!");
       this.navController.navigateRoot("/home/reservas");
@@ -58,4 +60,14 @@ export class DetalleReservaPage implements OnInit {
     }
   }
 
+  existePasajero(){
+    let pasajeros: any[] = this.viaje.pasajeros;
+    return pasajeros.some(p => p.rut == this.usuario.rut);
+  }
+
+  async cancelar_viaje(){
+    await this.viajeService.deleteViaje(this.id)
+    alert("Viaje eliminado con éxito!");
+    this.navController.navigateRoot("/home/reservas");
+  }
 }

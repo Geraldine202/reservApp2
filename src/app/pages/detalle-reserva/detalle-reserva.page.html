@@ -18,6 +18,9 @@
     <ion-card-content>
       Here's a small text description for the card content. Nothing more, nothing less.
     </ion-card-content>
-    <ion-button size="block" (click)="tomar_viaje()">Tomar viaje</ion-button>
+    <ion-button *ngIf="usuario.rut != viaje.conductor && !existePasajero()" size="block" (click)="tomar_viaje()">Tomar viaje</ion-button>
+    <ion-button *ngIf="usuario.rut != viaje.conductor && existePasajero()" size="block">Bajarse</ion-button>
+    
+    <ion-button *ngIf="usuario.rut == viaje.conductor" size="block" (click)="cancelar_viaje()">Cancelar viaje</ion-button>
   </ion-card>
 </ion-content>
