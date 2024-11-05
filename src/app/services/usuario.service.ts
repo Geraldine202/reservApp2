@@ -25,28 +25,6 @@ export class UsuarioService {
       "tiene_equipo": "no",
       "nombre_equipo": "",
       "tipo_usuario": "Administrador"
-    },{
-      "rut": "17543330-9",
-      "nombre": "alan",
-      "fecha_nacimiento": "1990-03-24",
-      "genero": "Masculino",
-      "correo": "alan.gajardo@duocuc.cl",
-      "contrasena": "Alanalan123.",
-      "valida_contrasena": "Alanalan123.",
-      "tiene_equipo": "si",
-      "nombre_equipo": "los profes",
-      "tipo_usuario": "Alumno"
-    },{
-      "rut": "18671637-k",
-      "nombre": "luisa",
-      "fecha_nacimiento": "1993-13-10",
-      "genero": "Femenino",
-      "correo": "luisa.marin@duocuc.cl",
-      "contrasena": "Luisaluisa123.",
-      "valida_contrasena": "Luisaluisa123.",
-      "tiene_equipo": "no",
-      "nombre_equipo": "",
-      "tipo_usuario": "Alumno"
     }];
     for(let u of usuarios){
       await this.createUsuario(u);

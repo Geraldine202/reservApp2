@@ -4,28 +4,10 @@
     <form [formGroup]="persona" (ngSubmit)="registrar()">
       <ion-input formControlName="rut" type="text" labelPlacement="stacked" label="RUT"></ion-input>
       <ion-input formControlName="nombre" type="text" labelPlacement="stacked" label="Nombre"></ion-input>
-      <ion-input formControlName="fecha_nacimiento" type="date" labelPlacement="stacked" label="Fecha nacimiento"></ion-input>
-      <ion-select formControlName="genero" label="Género" labelPlacement="stacked" cancelText="NO NO!">
-        <ion-select-option>Masculino</ion-select-option>
-        <ion-select-option>Femenino</ion-select-option>
-        <ion-select-option>Otro</ion-select-option>
-      </ion-select>
       <ion-input formControlName="correo" type="email" labelPlacement="stacked" label="Correo (sólo correos duoc)"></ion-input>
       <ion-input formControlName="contrasena" type="password" labelPlacement="stacked" label="Contraseña"></ion-input>
       <ion-input formControlName="valida_contrasena" type="password" labelPlacement="stacked" label="Repita contraseña"></ion-input>
 
-      <ion-label>¿Tiene equipo?</ion-label>
-      <ion-radio-group formControlName="tiene_equipo">
-        <ion-radio value="si">Si</ion-radio>
-        <ion-radio value="no">No</ion-radio>
-      </ion-radio-group>
-      
-      <ion-input *ngIf="persona.controls.tiene_equipo.value=='si'" formControlName="nombre_equipo" type="text" label="Nombre equipo" labelPlacement="stacked"></ion-input>
-      <ion-select formControlName="tipo_usuario" label="Tipo usuario" labelPlacement="stacked">
-        <ion-select-option>Administrador</ion-select-option>
-        <ion-select-option>Alumno</ion-select-option>
-      </ion-select>
-      
       <ion-button [disabled]="persona.invalid" type="submit" size="block" color="warning">REGISTRAR</ion-button>
       <ion-button [disabled]="botonModificar || persona.invalid" (click)="modificar()" size="block" color="dark">MODIFICAR</ion-button>
       <ion-button type="reset" size="block" color="secondary">LIMPIAR</ion-button>

@@ -11,14 +11,9 @@ export class AdministrarFirePage implements OnInit {
   persona = new FormGroup({
     rut: new FormControl('',[Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}")]),
     nombre: new FormControl('',[Validators.required,Validators.pattern("[A-Za-z ]{3,}")]),
-    fecha_nacimiento: new FormControl('',[Validators.required]),
-    genero: new FormControl('',[Validators.required]),
     correo: new FormControl('',[Validators.required, Validators.pattern("[a-zA-Z0-9.]+(@duocuc.cl)")]),
     contrasena: new FormControl('',[Validators.required, Validators.pattern("^(?=.*[-!#$%&/()?¡_.])(?=.*[A-Za-z])(?=.*[a-z]).{8,}$")]),
-    valida_contrasena: new FormControl('',[Validators.required, Validators.pattern("^(?=.*[-!#$%&/()?¡_.])(?=.*[A-Za-z])(?=.*[a-z]).{8,}$")]),
-    tiene_equipo: new FormControl('no',[Validators.required]),
-    nombre_equipo: new FormControl('',[]),
-    tipo_usuario: new FormControl('', [Validators.required])
+    valida_contrasena: new FormControl('',[Validators.required, Validators.pattern("^(?=.*[-!#$%&/()?¡_.])(?=.*[A-Za-z])(?=.*[a-z]).{8,}$")])
   });
   usuarios:any[] = [];
   botonModificar: boolean = true;
