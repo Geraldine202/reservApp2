@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FireService } from 'src/app/services/fire.service';
 
 @Component({
   selector: 'app-administrar-fire',
@@ -18,11 +19,12 @@ export class AdministrarFirePage implements OnInit {
   usuarios:any[] = [];
   botonModificar: boolean = true;
 
-  constructor() { 
+  constructor(private fireService:FireService) { 
     this.persona.get("rut")?.setValidators([Validators.required,Validators.pattern("[0-9]{7,8}-[0-9kK]{1}"),this.validarRut()]);
   }
 
   ngOnInit() {
+    this.cargarUsuarios();
   }
 
   validarEdad18(fecha_nacimiento: string){
@@ -67,11 +69,36 @@ export class AdministrarFirePage implements OnInit {
     };
   }
 
-  async registrar(){}
+  cargarUsuarios(){
+    this.fireService.getUsuarios().subscribe(data=>{
+      this.usuarios = data;
+    });
+  }
 
-  async buscar(rut_buscar:string){}
+  async registrar(){
+    if( await this.fireService.crearUsuario(this.persona.value)){
+      alert("USUARIO REGISTRADO!");
+      this.persona.reset();
+    }else{
+      alert("ERROR! USUARIO YA EXISTE!")
+    }
+  }
 
-  async modificar(){}
+  async buscar(usuario:any){
+    this.persona.setValue(usuario);
+    this.botonModificar = false;
+  }
 
-  async eliminar(rut_eliminar:string){}
+  async modificar(){
+    this.fireService.updateUsuario(this.persona.value).then(resp=>{
+      alert("USUARIO MODIFICADO!");
+      this.persona.reset();
+    }).catch(error=>{
+      console.log("ERROR: " + error)
+    });
+  }
+
+  async eliminar(rut_eliminar:string){
+    this.fireService.deleteUsuario(rut_eliminar);
+  }
 }
